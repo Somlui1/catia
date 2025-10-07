@@ -1,0 +1,21 @@
+{
+  "name": "paywright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^24.0.15"
+  },
+  "dependencies": {
+    "clipboardy": "^4.0.0",
+    "dayjs": "^1.11.18",
+    "mongodb": "^6.18.0",
+    "node-fetch": "^2.7.0"
+  }
+}
