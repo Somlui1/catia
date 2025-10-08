@@ -1,4 +1,4 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import dayjs from 'dayjs';
 const { count } = require('console');
 
@@ -7,6 +7,7 @@ const { count } = require('console');
 
 
 function processData(inputJson) {   
+const rows = inputJson.result.rows;
 const pattern = new RegExp(
   String.raw`(?<datetime>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}:\d{3})\s+I USGTRACING\s+` +
   String.raw`(?<action>Grant|Detachment|TimeOut)!!` +
@@ -24,6 +25,7 @@ const pattern = new RegExp(
 let records = [];
 // แปลงแต่ละ row
 for (const line of rows) {
+
     const match = line.match(pattern);
     if (match && match.groups) {
         const { datetime, action, feature, customer, session, product, license_type, count, level, host, ip, user } = match.groups;
