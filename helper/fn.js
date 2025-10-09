@@ -58,7 +58,6 @@ for (const row of records) {
         const startTime = active[key];
         const endTime = row.dateTime;
         const durationMin = endTime.diff(startTime, 'minute', true);
-
         sessions.push({
             session: row.session,
             feature: row.feature,
