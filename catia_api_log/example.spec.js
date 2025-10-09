@@ -48,15 +48,15 @@ export async function loginAndUploadLicense(page, username, password, licenseFil
 const logs_server_url = "http://10.10.3.215:8181/testing/";  // วันนี้
 const get_numday = process.env.NUMDAY;
 function filter_sessions(sessions, refday = get_numday) {
-    // จำนวนวันย้อนหลังจาก env หรือ default = 2
-    const numDays = refday ? parseInt(refday) :3;
+    if (!refday) {
+      return sessions;           // ถ้า refday ไม่กำหนด ให้ return sessions ทั้งหมด
+    }
+    const numDays = refday ? parseInt(refday) : 4;   // แปลง refday เป็นตัวเลข
 
-    // คำนวณวันที่ย้อนหลัง
-    const ref_day = new Date();
-    ref_day.setDate(ref_day.getDate() - numDays);
+    const ref_day = new Date();      // วันที่ปัจจุบัน
+    ref_day.setDate(ref_day.getDate() - numDays);  // ย้อนกลับ numDays วัน
 
-    // กรอง sessions
-    return sessions.filter(session => {
+    return sessions.filter(session => {  // กรอง sessions
         const sessionStart = new Date(session.start_datetime);
         return sessionStart >= ref_day;
     });
@@ -131,10 +131,11 @@ matchedRequest.body.parameters.numberOfRowsToReturn = 999999; // ลบเพื
   //console.log('✅ Export CSV success!');
       const recentSessions  = filter_sessions(data);
       await funcs.sendLicenseLogs(logs_server_url,'AA_catia',recentSessions,result);
-  } catch (error) {
+      get_numday ? console.log('Filtered sessions from last',get_numday,'days. Count =',recentSessions.length) : console.log('No filtering applied. Total sessions count =',data.length);     
+    } catch (error) {
     console.error('Error processing logs:', error);
   }
-}
+  }
 );
 //===========================================================================================================================================================================================================
 test('AHA capture getLogs API call', async ({ page }) => {
@@ -202,7 +203,8 @@ result = await response.json();
   //console.log('✅ Export CSV success!');
       const recentSessions  = filter_sessions(data);
       await funcs.sendLicenseLogs(logs_server_url,'AHA_catia',recentSessions,result);
-  } catch (error) {
+      get_numday ? console.log('Filtered sessions from last',get_numday,'days. Count =',recentSessions.length) : console.log('No filtering applied. Total sessions count =',data.length);
+    } catch (error) {
     console.error('Error processing logs:', error);
   }
 });
