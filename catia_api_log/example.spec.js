@@ -45,7 +45,23 @@ export async function loginAndUploadLicense(page, username, password, licenseFil
   await page.getByRole('textbox', { name: 'Start Date' }).click();
   await page.getByRole('button', { name: 'Move backward to switch to' }).dblclick();
 }
-const logs_server_url = "http://10.10.3.215:8181/testing/";
+const logs_server_url = "http://10.10.3.215:8181/testing/";  // วันนี้
+const get_numday = process.env.NUMDAY;
+function filter_sessions(sessions, refday = get_numday) {
+    // จำนวนวันย้อนหลังจาก env หรือ default = 2
+    const numDays = refday ? parseInt(refday) :3;
+
+    // คำนวณวันที่ย้อนหลัง
+    const ref_day = new Date();
+    ref_day.setDate(ref_day.getDate() - numDays);
+
+    // กรอง sessions
+    return sessions.filter(session => {
+        const sessionStart = new Date(session.start_datetime);
+        return sessionStart >= ref_day;
+    });
+}
+
 //===========================================================================================================================================================================================================
 test('AA capture getLogs API call', async ({ page }) => {
   // ✅ สร้าง Promise สำหรับรอ request ที่ action = "getLogs"
@@ -113,7 +129,8 @@ matchedRequest.body.parameters.numberOfRowsToReturn = 999999; // ลบเพื
      console.log('✅ Process data success! count of data =',data.length);
   //await funcs.export_csv(data, 'license_sessions_js_AHA.csv');
   //console.log('✅ Export CSV success!');
-      await funcs.sendLicenseLogs(logs_server_url,'AA_catia',data,result);
+      const recentSessions  = filter_sessions(data);
+      await funcs.sendLicenseLogs(logs_server_url,'AA_catia',recentSessions,result);
   } catch (error) {
     console.error('Error processing logs:', error);
   }
@@ -183,11 +200,11 @@ result = await response.json();
      console.log('✅ Process data success! count of data =',data.length);
   //await funcs.export_csv(data, 'license_sessions_js_AHA.csv');
   //console.log('✅ Export CSV success!');
-      await funcs.sendLicenseLogs(logs_server_url,'AHA_catia',data,result);
+      const recentSessions  = filter_sessions(data);
+      await funcs.sendLicenseLogs(logs_server_url,'AHA_catia',recentSessions,result);
   } catch (error) {
     console.error('Error processing logs:', error);
   }
- 
 });
 
 
