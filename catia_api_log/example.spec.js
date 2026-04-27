@@ -180,6 +180,7 @@ test('AHA capture getLogs API call', async ({ page }) => {
     // เปลี่ยนค่าที่ต้องการใน matchedRequest.body
     matchedRequest.body.parameters.numberOfRowsToReturn = 999999; // ลบเพื่อไม่จำกัดจำนวนแถว
     // ส่ง body ที่แก้ไขไปเลย
+    const fetch = (await import('node-fetch')).default;
     const response = await fetch(matchedRequest.url, {
       method: 'POST',
       headers: matchedRequest.headers,
@@ -254,6 +255,7 @@ test('AHT capture getLogs API call', async ({ page }) => {
     // เปลี่ยนค่าที่ต้องการใน matchedRequest.body
     matchedRequest.body.parameters.numberOfRowsToReturn = 999999; // ลบเพื่อไม่จำกัดจำนวนแถว
     // ส่ง body ที่แก้ไขไปเลย
+    const fetch = (await import('node-fetch')).default;
     const response = await fetch(matchedRequest.url, {
       method: 'POST',
       headers: matchedRequest.headers,
