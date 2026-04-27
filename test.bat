@@ -26,7 +26,6 @@ echo =========================================
 npx playwright test --project=chromium -g "%TEST_NAME%"
 IF %ERRORLEVEL% NEQ 0 (
     echo ERROR: Test "%TEST_NAME%" failed with exit code %ERRORLEVEL%.
-    REM To stop the script on failure, uncomment the next line:
 ) ELSE (
     echo SUCCESS: Test "%TEST_NAME%" completed successfully.
 )
@@ -38,7 +37,6 @@ goto :eof
 REM --- Run all tests sequentially ---
 call :run_test "AA capture getLogs API call"
 call :run_test "AHA capture getLogs API call"
-pause
+
 echo All tests finished.
-timeout /t 100 /nobreak >nul
 pause
