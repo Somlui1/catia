@@ -274,10 +274,10 @@ test('AHT capture getLogs API call', async ({ page }) => {
   try {
     const data = await funcs.processData(result);
     console.log('✅ Process data success! count of data =', data.length);
-    //await funcs.export_csv(data, 'license_sessions_js_AHA.csv');
-    //console.log('✅ Export CSV success!');
+    await funcs.export_csv(data, 'license_sessions_js_AHT.csv');
+    console.log('✅ Export CSV success!');
     const recentSessions = filter_sessions(data);
-    await funcs.sendLicenseLogs(logs_server_url, 'AHA_catia', recentSessions, result);
+    await funcs.sendLicenseLogs(logs_server_url, 'AHT_catia', recentSessions, result);
     get_numday ? console.log('Filtered sessions from last', get_numday, 'days. Count =', recentSessions.length) : console.log('No filtering applied. Total sessions count =', data.length);
   } catch (error) {
     console.error('Error processing logs:', error);
