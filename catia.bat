@@ -38,6 +38,7 @@ goto :eof
 REM --- Run all tests sequentially ---
 call :run_test "AA capture getLogs API call"
 call :run_test "AHA capture getLogs API call"
+call :run_test "AHT capture getLogs API call"
 pause
 echo All tests finished.
 timeout /t 100 /nobreak >nul
